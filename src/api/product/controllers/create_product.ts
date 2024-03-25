@@ -6,7 +6,6 @@ import { productsValidatorType } from "../../../validators/products"
 const createProduct = async (req: Request | any, res: Response) => {
     try {
         const { name, description, price, quantity, category, image } = req.body
-        console.log("🚀 ~ createProduct ~ image:", image)
         const product = await Product.create({ name, description, price, quantity, category, image })
         res.status(201).json(ApiResponse.response(201, 'Product created', product))
     } catch (error: any) {
@@ -19,7 +18,7 @@ export default createProduct
 
 export const allProducts = async (req: Request, res: Response) => {
     try {
-        const products: productsValidatorType[] = await Product.find();
+        // const products: productsValidatorType[] = await Product.find();
 
         const productData = await Product.aggregate([
             {
