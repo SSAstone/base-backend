@@ -1,24 +1,25 @@
 import { Schema, model, Document } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { compare, hash } from 'bcrypt';
+import { ModifiedUserValidatorType, UserValidatorType } from '../../../validators/user';
 
-export interface UserDocument extends Document {
-    username: string;
-    password: string;
-    email: string;
-    role: string;
-    isVerified: boolean;
-    isPasswordCorrect(password: string): Promise<boolean>;
-    generateAccessToken(): string;
-    generateRefreshToken(): string;
-    _id: string;
-    refreshToken: string;
-    assessToken: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+// export interface UserDocument extends Document {
+//     username: string;
+//     password: string;
+//     email: string;
+//     role: string;
+//     isVerified: boolean;
+//     isPasswordCorrect(password: string): Promise<boolean>;
+//     generateAccessToken(): string;
+//     generateRefreshToken(): string;
+//     _id: string;
+//     refreshToken: string;
+//     assessToken: string;
+//     createdAt: Date;
+//     updatedAt: Date;
+// }
 
-const userSchema: Schema<UserDocument> = new Schema({
+const userSchema: Schema<UserValidatorType> = new Schema({
     username: {
         type: String,
         lowercase: true,
@@ -36,6 +37,7 @@ const userSchema: Schema<UserDocument> = new Schema({
     },
     role: {
         type: String,
+        enum: ['admin', 'user', 'user_service'],
         default: 'user'
     },
     isVerified: {
@@ -51,7 +53,7 @@ const userSchema: Schema<UserDocument> = new Schema({
 
 }, { timestamps: true });
 
-userSchema.pre<UserDocument>('save', async function (next) {
+userSchema.pre<ModifiedUserValidatorType>('save', async function (next) {
     if (!this.isModified('password')) return next();
 
     this.password = await hash(this.password, 10);
@@ -89,6 +91,6 @@ userSchema.methods.generateRefreshToken = function () {
     );
 };
 
-const User = model<UserDocument>('User', userSchema);
+const User = model<UserValidatorType>('User', userSchema);
 
 export default User;

@@ -1,20 +1,21 @@
 import { Router } from "express";
 const userRouter = Router();
-import { allUsers } from "./controller/all_user";
-import { createUser } from "./controller/create_user";
-import { userVerified } from "./controller/otp_verified";
-import { loginUser } from "./controller/login_user";
-import { resetPassword } from "./controller/reset_password";
-import { forgetUser } from "./controller/forget_user";
+import { allUsers } from "./controllers/all_user";
+import { createUser } from "./controllers/create_user";
+import { loginUser } from "./controllers/login_user";
 import { verifyAccessToken } from "../../middleware/auth";
-import { fetchUser } from "./controller/user";
+import { fetchUser } from "./controllers/user";
+import { validateRequest } from "../../middleware/validation";
+import { OtpValidator } from "../../validators/otp";
+import { emailValidator, loginValidator, passwordValidator, userValidator } from "../../validators/user";
+import { resetPassword, sendOtp, verifiedUser } from "./controllers/verified_user";
 
 userRouter.get('/', verifyAccessToken, allUsers)
-userRouter.post('/', createUser)
+userRouter.post('/', validateRequest(userValidator), createUser)
 userRouter.get('/me', verifyAccessToken, fetchUser)
-userRouter.post('/login', loginUser)
-userRouter.post('/verified', userVerified)
-userRouter.post('/forget_password', forgetUser)
-userRouter.post('/reset_password', resetPassword)
-
+userRouter.post('/login', validateRequest(loginValidator), loginUser)
+userRouter.post('/send_otp', validateRequest(OtpValidator), sendOtp)
+userRouter.post('/verified', validateRequest(emailValidator), verifiedUser)
+userRouter.post('/reset_password', validateRequest(passwordValidator), resetPassword)
+ 
 export default userRouter

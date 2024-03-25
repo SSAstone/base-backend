@@ -1,5 +1,5 @@
 import { verifyAccessToken } from "../../middleware/auth"
-import { startService } from "./controller/start_service"
+import { startService } from "./controllers/start_service"
 
 const serviceRouter = require('express').Router()
 

@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 
 const defaultMiddleware = [
     cors({
-        origin: 'http://localhost:3000',
+        origin: ['http://192.168.0.104:3000', 'http://localhost:3000', '*'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }),

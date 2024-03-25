@@ -1,4 +1,4 @@
-import User from "../../api/user/model/user"
+import User from "../../api/user/models/user"
 
 const existedUser = async (email: string) => {
     const user = await User.findOne({ email })

@@ -1,13 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
+import { OtpValidatorType } from "../../../validators/otp";
 
-export interface OtpDocument extends Document {
-    email: string
-    otp: string
-    createdAt: Date
-    updatedAt: Date
-}
-
-const otpSchema: Schema<OtpDocument> = new mongoose.Schema({
+const otpSchema: Schema<OtpValidatorType> = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Email is required.'],
@@ -20,6 +14,6 @@ const otpSchema: Schema<OtpDocument> = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-const Otp = model<OtpDocument>('Otp', otpSchema)
+const Otp = model<OtpValidatorType>('Otp', otpSchema)
 
 export default Otp

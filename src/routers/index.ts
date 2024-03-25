@@ -1,6 +1,8 @@
 import { Request, Response, Application, NextFunction } from 'express'
 import user_router from '../api/user/user.router'
-import serviceRouter from '../api/services/service.router'
+import serviceRouter from '../api/service/service.router'
+import productRouter from '../api/product/product.router'
+import categoryRouter from '../api/category/category.router'
 
 interface RouteInterface {
     path: string
@@ -23,6 +25,14 @@ const routes: Array<RouteInterface> = [
     {
         path: '/service',
         controller: serviceRouter
+    },
+    {
+        path: '/product',
+        controller: productRouter
+    },
+    {
+        path: '/category',
+        controller: categoryRouter
     }
 ]
 

@@ -7,7 +7,7 @@ dotenv.config()
 
 export const server: http.Server = http.createServer(app)
 
-const port = process.env.PORT || 5500;
+const port = process.env.PORT || 5550;
 
 server.listen(port, async () => {
     await MongoDBConnect()    

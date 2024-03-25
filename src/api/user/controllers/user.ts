@@ -1,8 +1,7 @@
 import  jwt  from 'jsonwebtoken';
 import { Request, Response } from "express"
-import User from '../model/user';
-import ErrorResponse from '../../../lib/api_response/error_response';
-import DataResponse from '../../../lib/api_response/data_response';
+import User from '../models/user';
+import { ApiResponse } from '../../../lib/api_response/response';
 
 export const fetchUser = async (req: Request | any, res: Response) => {
     try {
@@ -11,9 +10,9 @@ export const fetchUser = async (req: Request | any, res: Response) => {
         const user = await User.findById(decodedToken?._id).select("-password -assessToken -refreshToken")
 
         if (!user) {
-            return res.status(401).json(new ErrorResponse(401, "Invalid access token"))
+            return res.status(401).json(ApiResponse.errorResponse(401, "Invalid access token"))
         }
-        return res.status(201).json(new DataResponse(201, "User", user))
+        return res.status(201).json(ApiResponse.response(201, "User successfully fetched", user))
     } catch (error) {
         console.log(error)
     }
