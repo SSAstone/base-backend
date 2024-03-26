@@ -2,11 +2,18 @@ import { Request, Response } from "express"
 import Product from "../models/product"
 import { ApiResponse } from "../../../lib/api_response/response"
 import { productsValidatorType } from "../../../validators/products"
+import uploadImage from "../../../lib/utils/upload_image"
 
 const createProduct = async (req: Request | any, res: Response) => {
     try {
-        const { name, description, price, quantity, category, image } = req.body
-        const product = await Product.create({ name, description, price, quantity, category, image })
+        const { name, description, price, quantity, category } = req.body
+
+        // const file = {
+        //     type: req.file.mimetype,
+        //     buffer: req.file.buffer
+        // }
+        // const buildImage = await uploadImage(file, 'single');
+        const product = await Product.create({ name, description, price, quantity, category, image: [] })
         res.status(201).json(ApiResponse.response(201, 'Product created', product))
     } catch (error: any) {
         console.log(error)
@@ -22,12 +29,12 @@ export const allProducts = async (req: Request, res: Response) => {
 
         const productData = await Product.aggregate([
             {
-              $lookup: {
-                from: "categories",
-                localField: "category",
-                foreignField: "_id",
-                as: "categories_data"
-              }
+                $lookup: {
+                    from: "categories",
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "categories_data"
+                }
             },
             {
                 $addFields: {
@@ -43,8 +50,8 @@ export const allProducts = async (req: Request, res: Response) => {
                     description: 0
                 }
             }
-          ])
-          
+        ])
+
         res.status(200).json(ApiResponse.paginateResponse(200, 'products', productData))
     } catch (error) {
         res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'))

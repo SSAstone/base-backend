@@ -1,11 +1,5 @@
-// const multer = require("multer");
-// const path = require("path");
-// const fs = require("fs");
-
 import multer from "multer";
 import path from "path";
-import fs from "fs";
-// import uuid from "uuid/v4";
 
 export const uploadMultiple = multer({
   storage: multer.memoryStorage(),
@@ -23,14 +17,10 @@ export const upload = multer({
   }
 }).single("image");
 
-// // Check file Type
 function checkFileType(file: any, cb: any) {
 
-  // Allowed ext
   const fileTypes = /jpeg|jpg|png|gif/;
-  // Check ext
   const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mime
   const mimeType = fileTypes.test(file.mimetype);
 
   if (mimeType && extName) {
@@ -39,5 +29,3 @@ function checkFileType(file: any, cb: any) {
     cb("Error: Images Only !!!");
   }
 }
-
-// module.exports = { uploadMultiple, upload };

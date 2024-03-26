@@ -30,7 +30,9 @@ import { ApiResponse } from "../lib/api_response/response";
 export function validateRequest(val: any) {
     return async (req: Request | any, res: Response, next: NextFunction) => {
         try {
+            console.log('req.body validation', req.body)
             const inputData: z.infer<typeof val> = val.safeParse(req.body);
+            console.log("🚀 ~ return ~ inputData:", inputData)
             if (!inputData.success) {
                 return res.status(400).json(ApiResponse.response(400, 'Validation error', inputData.error, false));
             }
