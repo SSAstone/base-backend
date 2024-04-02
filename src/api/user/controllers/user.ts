@@ -12,7 +12,7 @@ export const fetchUser = async (req: Request | any, res: Response) => {
         if (!user) {
             return res.status(401).json(ApiResponse.errorResponse(401, "Invalid access token"))
         }
-        return res.status(201).json(ApiResponse.response(201, "User successfully fetched", user))
+        return res.status(200).json(ApiResponse.response(200, "User successfully fetched", user))
     } catch (error) {
         console.log(error)
     }

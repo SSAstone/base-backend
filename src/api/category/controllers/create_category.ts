@@ -8,7 +8,6 @@ export const createCategory = async (req: Request, res: Response) => {
         const { name, _id } = req.body
         console.log("🚀 ~ createCategory ~ name:", name)
         if (_id) {
-            console.log("🚀 ~ createCategory ~ _id:", _id)
             const categories = await category.findByIdAndUpdate(_id, { name })
             res.status(201).json(ApiResponse.response(201, 'Category updated', categories))
         } else {

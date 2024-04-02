@@ -8,6 +8,6 @@ const categorySchema: Schema<categoryValidatorType>  = new Schema({
     }
 }, { timestamps: true })  
 
-const Category = model<categoryValidatorType>('Category', categorySchema)
+const Category = model<categoryValidatorType>('Categorie', categorySchema)
 
 export default Category

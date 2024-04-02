@@ -7,10 +7,11 @@ export class ApiResponse {
             success
         }
     }
-    public static errorResponse(status: number, message: string, success: boolean = false) {
+    public static errorResponse(status: number, message: string, error?: any, success: boolean = false) {
         return {
             status,
             message,
+            error,
             success
         }
     }

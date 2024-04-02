@@ -1,15 +1,15 @@
 import { Router } from "express";
 import createProduct, { allProducts } from "./controllers/create_product";
 import { validateRequest } from "../../middleware/validation";
-import { productsValidator } from "../../validators/products";
 import { verifyAccessToken } from "../../middleware/auth";
 import { deleteProduct } from "./controllers/edit_product";
-import { upload } from "../../middleware/multer";
+import { fileData, upload } from "../../middleware/multer";
+import { productsValidator } from "../../validators/products";
 
 const productRouter = Router();
-
+//upload.single("image"),
 productRouter.get( "/", verifyAccessToken, allProducts)
-productRouter.post("/", upload, verifyAccessToken, validateRequest(productsValidator), createProduct)
+productRouter.post("/", verifyAccessToken, validateRequest(productsValidator),  createProduct)
 productRouter.delete("/:id", verifyAccessToken, deleteProduct)
 
 export default productRouter

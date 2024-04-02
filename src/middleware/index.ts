@@ -9,10 +9,10 @@ const defaultMiddleware = [
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }),
-    express.urlencoded({ extended: true }),
     express.json(),
+    express.urlencoded({ extended: true }),
     morgan('dev'),
-    cookieParser()
+    cookieParser(),
 ]
 
 const productionMiddleware: Array<any> = []

@@ -13,7 +13,7 @@ export const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 1000000 },
   fileFilter: async function (req, file, cb) {
-  checkFileType(file, cb);
+    checkFileType(file, cb);
   }
 }).single("image");
 
@@ -29,3 +29,15 @@ function checkFileType(file: any, cb: any) {
     cb("Error: Images Only !!!");
   }
 }
+
+const storage =  multer.diskStorage({
+    destination: function (req: any, file: any, cb: any) {
+        cb(null, './uploads')
+    },
+    filename: function (req: any, file: any, cb: any) {
+        cb(null, file.originalname)
+    }
+})
+
+export const fileData = multer({ storage: storage }) 
+

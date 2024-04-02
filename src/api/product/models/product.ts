@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { productsValidatorType } from "../../../validators/products";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const productSchema: Schema<productsValidatorType>  = new Schema({
+const productSchema: Schema<productsValidatorType> = new Schema({
     name: {
         type: String,
         required: true
@@ -10,13 +10,11 @@ const productSchema: Schema<productsValidatorType>  = new Schema({
     description: String,
     price: String,
     quantity: String,
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
+    categoryId: {
+        type: String,
     },
     image: {
-        type: [] as any
+        type: Array || String || Object,
     }
 }, { timestamps: true });
 

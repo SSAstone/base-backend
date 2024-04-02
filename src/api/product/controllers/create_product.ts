@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { Request, Response } from "express"
 import Product from "../models/product"
 import { ApiResponse } from "../../../lib/api_response/response"
@@ -6,14 +7,15 @@ import uploadImage from "../../../lib/utils/upload_image"
 
 const createProduct = async (req: Request | any, res: Response) => {
     try {
-        const { name, description, price, quantity, category } = req.body
-
+        const { name, description, price, quantity, categoryId, image } = req.body
+        console.log("🚀 ~ createProduct ~ image:", categoryId  )
         // const file = {
         //     type: req.file.mimetype,
         //     buffer: req.file.buffer
         // }
+        // console.log("🚀 ~ createProduct ~ file:", file)
         // const buildImage = await uploadImage(file, 'single');
-        const product = await Product.create({ name, description, price, quantity, category, image: [] })
+        const product = await Product.create({ name, description, price, quantity, categoryId, image })
         res.status(201).json(ApiResponse.response(201, 'Product created', product))
     } catch (error: any) {
         console.log(error)
@@ -25,32 +27,30 @@ export default createProduct
 
 export const allProducts = async (req: Request, res: Response) => {
     try {
-        // const products: productsValidatorType[] = await Product.find();
-
         const productData = await Product.aggregate([
+            {
+                $addFields: {
+                    "searchId": { $toObjectId: "$categoryId" }
+                }
+            },
             {
                 $lookup: {
                     from: "categories",
-                    localField: "category",
+                    localField: "searchId",
                     foreignField: "_id",
-                    as: "categories_data"
+                    as: "categoriesData"
                 }
             },
             {
                 $addFields: {
-                    category: {
-                        $arrayElemAt: ["$categories_data", 0]
-                    }
+                    category: { $first: "$categoriesData" },
                 }
             },
             {
-                $project: {
-                    categories_data: 0,
-                    image: 0,
-                    description: 0
-                }
+                $unset: ["searchId", "categoriesData"]
             }
         ])
+        console.log("🚀 ~ allProducts ~ productData:", productData)
 
         res.status(200).json(ApiResponse.paginateResponse(200, 'products', productData))
     } catch (error) {
