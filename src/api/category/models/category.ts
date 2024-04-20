@@ -5,6 +5,10 @@ const categorySchema: Schema<categoryValidatorType>  = new Schema({
     name: {
         type: String,
         required: true
+    },
+    image: {
+        type: String || Object || Array,
+        required: true
     }
 }, { timestamps: true })  
 

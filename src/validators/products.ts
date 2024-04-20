@@ -8,7 +8,7 @@ export const productsValidator = z.object({
     quantity: z.number().optional(),
     image: z.any().optional(),
     // category: z.string({ required_error: "Category is required."}).transform(value => new ObjectId(value)),
-    categoryId: z.string().optional()
+    categoryId: z.string({ required_error: "Category is required."}).transform(value => new ObjectId(value)),
 });
 
 export type productsValidatorType = z.infer<typeof productsValidator>;

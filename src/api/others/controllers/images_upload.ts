@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import uploadImage from "../../../lib/utils/upload_image";
 import { ApiResponse } from "../../../lib/api_response/response";
+import uploadImage from "../../../lib/utils/upload_image";
 
 export const imagesUpload = async (req: Request, res: Response) => {
     try {

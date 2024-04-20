@@ -21,7 +21,7 @@ export class ApiResponse {
             message,
             data: {
                 totalDocs: data.length,
-                data,
+                docs: data,
                 limit: 'perPage',
                 page: 'currentPage',
                 nextPage: 'next',

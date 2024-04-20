@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodError } from "zod";
 import { z } from "zod";
-import { ApiResponse } from "../lib/api_response/response";
 
 export function validateRequest<T extends z.ZodType<any, any>>(val: T) {
     return async (req: Request | any, res: Response, next: NextFunction) => {

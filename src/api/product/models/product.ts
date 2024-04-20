@@ -11,10 +11,11 @@ const productSchema: Schema<productsValidatorType> = new Schema({
     price: String,
     quantity: String,
     categoryId: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Categorie'
     },
     image: {
-        type: Array || String || Object,
+        type: String || Object || Array,
     }
 }, { timestamps: true });
 

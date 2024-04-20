@@ -41,39 +41,3 @@ async function uploadImage(file: any, quantity: string) {
 }
 
 export default uploadImage
-
-// export const uploadImageProduct = (req: Request, res: Response) => {
-    //     try {
-        //         const file = {
-            //             type: req.file.mimetype,
-            //             buffer: req.file.buffer
-            //         }
-            //     } catch (error) {
-                
-                //     }
-                // }
-                
-                
-                // app.post('/test-upload', upload, async (req, res) => {
-                    //     const file = {
-                        //         type: req.file.mimetype,
-                        //         buffer: req.file.buffer
-                        //     }
-                        //     try {
-                            //         const buildImage = await uploadImage(file, 'single');
-                            //         res.send({
-                                //             status: "SUCCESS",
-                                //             imageName: buildImage
-                                //         })
-//     } catch(err) {
-//         console.log(err);
-//     }
-
-            // Create database record or update as per your database schema
-            // Example:
-            // const imageRecord = {
-            //     imageUrl: fileName,
-            //     // other properties if needed
-            // };
-            // await db.collection('images').add(imageRecord);
-// })

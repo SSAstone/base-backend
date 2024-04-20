@@ -50,8 +50,6 @@ export const allProducts = async (req: Request, res: Response) => {
                 $unset: ["searchId", "categoriesData"]
             }
         ])
-        console.log("🚀 ~ allProducts ~ productData:", productData)
-
         res.status(200).json(ApiResponse.paginateResponse(200, 'products', productData))
     } catch (error) {
         res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'))
