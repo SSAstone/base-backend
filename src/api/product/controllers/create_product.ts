@@ -8,13 +8,7 @@ import uploadImage from "../../../lib/utils/upload_image"
 const createProduct = async (req: Request | any, res: Response) => {
     try {
         const { name, description, price, quantity, categoryId, image } = req.body
-        console.log("🚀 ~ createProduct ~ image:", categoryId  )
-        // const file = {
-        //     type: req.file.mimetype,
-        //     buffer: req.file.buffer
-        // }
-        // console.log("🚀 ~ createProduct ~ file:", file)
-        // const buildImage = await uploadImage(file, 'single');
+        console.log("🚀 ~ createProduct ~ image:", req?.params)
         const product = await Product.create({ name, description, price, quantity, categoryId, image })
         res.status(201).json(ApiResponse.response(201, 'Product created', product))
     } catch (error: any) {
@@ -27,6 +21,13 @@ export default createProduct
 
 export const allProducts = async (req: Request, res: Response) => {
     try {
+        console.log("🚀 ~ createProduct ~ image:", req?.params)
+
+        if(req?.params?.id) {
+            const findById = await Product.findById(req?.params?.id)
+            return res.status(200).json(ApiResponse.response(200, 'product', findById))
+        }
+ 
         const productData = await Product.aggregate([
             {
                 $addFields: {
