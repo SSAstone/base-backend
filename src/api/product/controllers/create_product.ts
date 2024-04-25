@@ -27,6 +27,12 @@ export const allProducts = async (req: Request, res: Response) => {
             return res.status(200).json(ApiResponse.response(200, 'product', findById))
         }
 
+        if(req?.query?.ids) {
+            const ids = req?.query?.ids as string
+            const products = await Product.find({ _id: { $in: ids.split('/') } })
+            return res.status(200).json(ApiResponse.response(200, 'products', products))
+        }
+
         const productData = await Product.aggregate([
             {
                 $addFields: {
