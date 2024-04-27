@@ -15,24 +15,63 @@ export class ApiResponse {
             success
         }
     }
-    public static paginateResponse(status: number, message: string, data: any, success: boolean = true) {
+    // public static paginateResponse(
+    //     status: number,
+    //     message: string,
+    //     data: any,
+    //     total: number,
+    //     currentPage: number,
+    //     totalPages: number,
+    //     limit: number,
+    //     hasNextPage: boolean,
+    //     hasPrevPage: boolean,
+    //     success: boolean = true
+    // ) {
+    //     return {
+    //         status,
+    //         message,
+    //         data: {
+    //             totalDocs: total,
+    //             docs: data,
+    //             limit,
+    //             page: currentPage,
+    //             nextPage: hasNextPage,
+    //             prevPage: hasPrevPage,
+    //             totalPages,
+    //             hasPrevPage,
+    //             hasNextPage,
+    //             pagingCounter: null,
+    //             meta: 'paginator',
+    //         },
+    //         success,
+    //     };
+    // }
+    public static paginateResponse(
+        status: number,
+        message: string,
+        data: any,
+        total: number,
+        currentPage: any,
+        limit: number,
+        success: boolean = true
+    ) {
+        let pages = Math.ceil(total / limit);
+        let current = parseInt(currentPage as string);
         return {
             status,
             message,
             data: {
-                totalDocs: data.length,
+                totalDocs: total,
                 docs: data,
-                limit: 'perPage',
-                page: 'currentPage',
-                nextPage: 'next',
-                prevPage: 'prev',
-                totalPages: 'pageCount',
-                hasPrevPage: 'hasPrev',
-                hasNextPage: 'hasNext',
-                pagingCounter: 'pageCounter',
-                meta: 'paginator'
+                limit,
+                page: current,
+                nextPage: current < pages,
+                prevPage: current > 1,
+                totalPages: pages,
+                pagingCounter: null,
+                meta: 'paginator',
             },
-            success
-        }
+            success,
+        };
     }
 }

@@ -22,15 +22,21 @@ export default createProduct
 
 export const allProducts = async (req: Request, res: Response) => {
     try {
+        const { page = 1, limit = 3 } = req.query;
+        const options = {
+            limit: parseInt(limit as string),
+            skip: (parseInt(page as string) - 1) * parseInt(limit as string),
+        };
+
         if (req?.params?.id) {
-            const findById = await Product.findById(req?.params?.id)
-            return res.status(200).json(ApiResponse.response(200, 'product', findById))
+            const findById = await Product.findById(req?.params?.id);
+            return res.status(200).json(ApiResponse.response(200, 'product', findById));
         }
 
-        if(req?.query?.ids) {
-            const ids = req?.query?.ids as string
-            const products = await Product.find({ _id: { $in: ids.split('/') } })
-            return res.status(200).json(ApiResponse.response(200, 'products', products))
+        if (req?.query?.ids) {
+            const ids = req?.query?.ids as string;
+            const products = await Product.find({ _id: { $in: ids.split('/') } });
+            return res.status(200).json(ApiResponse.response(200, 'products', products));
         }
 
         const productData = await Product.aggregate([
@@ -54,10 +60,24 @@ export const allProducts = async (req: Request, res: Response) => {
             },
             {
                 $unset: ["searchId", "categoriesData"]
-            }
-        ])
-        res.status(200).json(ApiResponse.paginateResponse(200, 'products', productData))
+            },
+            // Add limit and skip to the aggregation pipeline
+            { $skip: options.skip },
+            { $limit: options.limit }
+        ]);
+
+        const totalProductsCount = await Product.countDocuments();
+
+        res.status(200).json(ApiResponse.paginateResponse(
+            200,
+            'products',
+            productData,
+            totalProductsCount,
+            page,
+            options.limit
+        ));
+        
     } catch (error) {
-        res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'))
+        res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'));
     }
 }
