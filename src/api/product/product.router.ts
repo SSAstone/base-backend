@@ -8,7 +8,7 @@ import editProduct, { deleteProduct } from "./controllers/edit_product";
 
 const productRouter = Router();
 //upload.single("image"),
-productRouter.get( "/:id?", verifyAccessToken, allProducts)
+productRouter.get( "/:id?", allProducts)
 productRouter.post("/:id?", verifyAccessToken, validateRequest(productsValidator),  createProduct)
 // productRouter.post("/:id", verifyAccessToken,   editProduct)
 productRouter.delete("/:id", verifyAccessToken, deleteProduct)

@@ -22,7 +22,8 @@ export default createProduct
 
 export const allProducts = async (req: Request, res: Response) => {
     try {
-        const { page = 1, limit = 3 } = req.query;
+        const { page = 1, limit = 10 } = req.query;
+        console.log("🚀 ~ allProducts ~ page:", page)
         const options = {
             limit: parseInt(limit as string),
             skip: (parseInt(page as string) - 1) * parseInt(limit as string),
