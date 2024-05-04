@@ -40,15 +40,15 @@ export const allProducts = async (req: Request, res: Response) => {
         }
 
         const productData = await Product.aggregate([
-            {
-                $addFields: {
-                    "searchId": { $toObjectId: "$categoryId" }
-                }
-            },
+            // {
+            //     $addFields: {
+            //         "searchId": { $toObjectId: "$categoryId" }
+            //     }
+            // },
             {
                 $lookup: {
                     from: "categories",
-                    localField: "searchId",
+                    localField: "categoryId",
                     foreignField: "_id",
                     as: "categoriesData"
                 }
@@ -61,7 +61,6 @@ export const allProducts = async (req: Request, res: Response) => {
             {
                 $unset: ["searchId", "categoriesData"]
             },
-            // Add limit and skip to the aggregation pipeline
             { $skip: options.skip },
             { $limit: options.limit }
         ]);

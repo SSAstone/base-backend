@@ -3,22 +3,6 @@ import jwt from 'jsonwebtoken';
 import { compare, hash } from 'bcrypt';
 import { ModifiedUserValidatorType, UserValidatorType } from '../../../validators/user';
 
-// export interface UserDocument extends Document {
-//     username: string;
-//     password: string;
-//     email: string;
-//     role: string;
-//     isVerified: boolean;
-//     isPasswordCorrect(password: string): Promise<boolean>;
-//     generateAccessToken(): string;
-//     generateRefreshToken(): string;
-//     _id: string;
-//     refreshToken: string;
-//     assessToken: string;
-//     createdAt: Date;
-//     updatedAt: Date;
-// }
-
 const userSchema: Schema<UserValidatorType> = new Schema({
     username: {
         type: String,
