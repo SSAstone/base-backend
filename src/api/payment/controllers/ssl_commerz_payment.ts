@@ -4,12 +4,14 @@ import SSLCommerzPayment from "sslcommerz-lts"
 import { ApiResponse } from "../../../lib/api_response/response";
 import Product from '../../product/models/product';
 
+
 const sslCommerzPayment = async (req: Request | any, res: Response) => {
 
     try {
         const { productId } = req.body
+
+        const productData = []
         let totalPrice = 0;
-        
         for (const product of productId) {
             const pipeline = [
                 {
@@ -19,20 +21,31 @@ const sslCommerzPayment = async (req: Request | any, res: Response) => {
                 },
                 {
                     $project: {
-                        totalPrice: { $multiply: [{ $toDouble: "$price" }, product.quantity] }
+                        totalPrice: { $multiply: [{ $toDouble: "$price" }, product.quantity] },
+                        name: 1,
+                        image: 1,
+                        _id: 1,
+                        price: 1,
+                        categoryId: 1,
+                        description: 1,
+                        quantity: product.quantity
                     }
                 }
             ];
             const result = await Product.aggregate(pipeline);
             totalPrice += result[0].totalPrice;
+            productData.push(result[0])
         }
-
+        
+        console.log("🚀 ~ sslCommerzPayment ~ productData:", productData)
+        const tranId = new ObjectId().toHexString()
+        
         const data = {
             total_amount: totalPrice,
             currency: 'BDT',
-            tran_id: new ObjectId().toHexString(),
-            success_url: 'http://localhost:3000/',
-            fail_url: 'http://localhost:3000/payment/fail',
+            tran_id: tranId,
+            success_url: `http://localhost:5550/payment/success/${tranId}`,
+            fail_url: 'http://localhost:3030/payment/fail',
             cancel_url: 'http://localhost:3000/cancel',
             ipn_url: 'http://localhost:3000/ipn',
             shipping_method: 'Courier',
@@ -58,19 +71,28 @@ const sslCommerzPayment = async (req: Request | any, res: Response) => {
             ship_country: 'Bangladesh',
         } as any;
 
-        const sslcz = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASSWORD, false);
+        const sslcz = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASSWORD, process.env.NODE_ENV !== 'production');
         sslcz.init(data).then((apiResponse: any) => {
-            // Redirect the user to payment gateway
             let GatewayPageURL = apiResponse.GatewayPageURL
-            console.log('Redirecting to: ', GatewayPageURL)
             res.send(ApiResponse.response(200, 'Success', GatewayPageURL))
         });
-        
     } catch (error) {
-        console.log("🚀 ~ sslCommerzPayment ~ error:", error)
         return res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'))
     }
 
 }
 
 export default sslCommerzPayment;
+
+export const sslCommerzSuccess = async (req: Request | any, res: Response) => {
+    try {
+
+        const { id } = req.params
+        console.log("🚀 ~ sslCommerzSuccess ~ tran_id:", id)
+        res.redirect(`${'http://localhost:3000/payment/success'}`)
+
+    } catch (error) {
+        res.status(500).json(ApiResponse.errorResponse(500, 'Internal server error'))
+        
+    }
+}

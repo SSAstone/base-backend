@@ -9,6 +9,8 @@ export const server: http.Server = http.createServer(app)
 
 const port = process.env.PORT || 5550;
 
+console.log(process.env.NODE_ENV)
+
 server.listen(port, async () => {
     await MongoDBConnect()    
     console.log(`Example app listening at http://localhost:${port}`)

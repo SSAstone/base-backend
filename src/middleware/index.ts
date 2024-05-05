@@ -5,14 +5,14 @@ import cookieParser from 'cookie-parser'
 
 const defaultMiddleware = [
     cors({
-        origin: ['http://192.168.0.104:3000', 'http://localhost:3000', '*'],
+        origin: ['http://192.168.0.104:3000', 'http://localhost:3000', 'https://e-commerce-three-green.vercel.app', '*'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }),
     express.json(),
     express.urlencoded({ extended: true }),
     morgan('dev'),
-    cookieParser(),
+    // cookieParser(),
 ]
 
 const productionMiddleware: Array<any> = []

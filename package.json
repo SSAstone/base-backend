@@ -4,9 +4,10 @@
   "description": "",
   "main": "main.ts",
   "scripts": {
-    "dev": "nodemon src/main.ts",
+    "dev:develop": "SET NODE_ENV=development&& nodemon src/main.ts",
+    "dev": "SET NODE_ENV=production&& nodemon src/main.ts",
     "build": "tsc",
-    "start": "ts-node dist/main.js",
+    "start": "SET NODE_ENV=development&& ts-node dist/main.js",
     "test": "jest"
   },
   "keywords": [],
@@ -17,6 +18,7 @@
     "@types/cookie-parser": "^1.4.6",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "config": "^3.3.11",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.2",
@@ -34,6 +36,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/body-parser": "^1.19.5",
+    "@types/config": "^3.3.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",

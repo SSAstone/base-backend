@@ -4,7 +4,7 @@ import { z } from "zod";
 export function validateRequest<T extends z.ZodType<any, any>>(val: T) {
     return async (req: Request | any, res: Response, next: NextFunction) => {
         try {
-            console.log('req.body validation', req.body)
+            // console.log('req.body validation', req.body)
             const inputData: z.infer<T> = val.safeParse(req.body);
 
             if (!inputData.success) {
