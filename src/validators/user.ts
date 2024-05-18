@@ -8,10 +8,10 @@ export const userValidator = z.object({
     isVerified: z.boolean().optional(),
     refreshToken: z.string().optional(),
     assessToken: z.string().optional(),
-    isPasswordCorrect: z.function().args(z.string()).returns(z.boolean()),
-    generateRefreshToken: z.function().returns(z.string()),
-    generateAccessToken: z.function().returns(z.string()),
-    createdAt: z.date(),
+    isPasswordCorrect: z.function().args(z.string()).returns(z.boolean()).optional(),
+    generateRefreshToken: z.function().returns(z.string()).optional(),
+    generateAccessToken: z.function().returns(z.string()).optional(),
+    createdAt: z.date().optional(),
 })
 
 export type UserValidatorType = z.infer<typeof userValidator>

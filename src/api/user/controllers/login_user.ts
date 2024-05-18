@@ -5,6 +5,7 @@ import { ApiResponse } from "../../../lib/api_response/response";
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const { username_email, password } = req.body;
+        console.log("🚀 ~ loginUser ~ username_email:", username_email)
         const emailIs = username_email.includes('@') ? username_email : undefined;
         const email = emailIs.includes('gmail') ? emailIs : undefined;
         const username = username_email.includes('@') ? !email ? username_email : undefined : username_email;

@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 
 const defaultMiddleware = [
     cors({
-        origin: ['http://192.168.0.104:3000', 'http://localhost:3000', 'https://e-commerce-three-green.vercel.app', '*'],
+        origin: ['http://192.168.0.105:3000', 'http://localhost:3000', 'https://e-commerce-three-green.vercel.app', '*'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }),

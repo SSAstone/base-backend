@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../../app';
@@ -10,8 +11,13 @@ afterEach(async () => {
 })
 
 describe('User', () => {
-    test('should create a new user', async () => {
-        let res = await request(app).get('/user')
-        expect(res.status).toBe(200)
-    })
-})
+    test('should get all users', async () => {
+        const token = jwt.sign({ id: 'testUserId' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+        const res = await request(app)
+            .get('/user')
+            .set('Authorization', `Bearer ${token}`);
+
+        expect(res.status).toBe(200);
+    });
+});

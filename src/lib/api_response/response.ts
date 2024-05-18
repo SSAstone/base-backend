@@ -60,17 +60,15 @@ export class ApiResponse {
         return {
             status,
             message,
-            data: {
-                totalDocs: total,
-                docs: data,
-                limit,
-                page: current,
-                nextPage: current < pages,
-                prevPage: current > 1,
-                totalPages: pages,
-                pagingCounter: null,
-                meta: 'paginator',
-            },
+            totalDocs: total,
+            docs: data,
+            limit,
+            page: current,
+            nextPage: current < pages,
+            prevPage: current > 1,
+            totalPages: pages,
+            pagingCounter: null,
+            meta: 'paginator',
             success,
         };
     }

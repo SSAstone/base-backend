@@ -40,15 +40,15 @@ export const allProducts = async (req: Request, res: Response) => {
         }
 
         const productData = await Product.aggregate([
-            // {
-            //     $addFields: {
-            //         "searchId": { $toObjectId: "$categoryId" }
-            //     }
-            // },
+            {
+                $addFields: {
+                    "searchId": { $toObjectId: "$categoryId" }
+                }
+            },
             {
                 $lookup: {
                     from: "categories",
-                    localField: "categoryId",
+                    localField: "searchId",
                     foreignField: "_id",
                     as: "categoriesData"
                 }

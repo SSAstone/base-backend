@@ -10,7 +10,7 @@ import { OtpValidator } from "../../validators/otp";
 import { emailValidator, loginValidator, passwordValidator, userValidator } from "../../validators/user";
 import { resetPassword, sendOtp, verifiedUser } from "./controllers/verified_user";
 
-userRouter.get('/', verifyAccessToken, allUsers)
+userRouter.get('/', allUsers)
 userRouter.post('/', validateRequest(userValidator), createUser)
 userRouter.get('/me', verifyAccessToken, fetchUser)
 userRouter.post('/login', validateRequest(loginValidator), loginUser)
