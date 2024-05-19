@@ -14,7 +14,6 @@ const getMessage = async (req: Request, res: Response) => {
                 { senderId: receiverId, receiverId: senderId }
             ]
         }).sort('timestamp');
-        console.log("🚀 ~ getMessage ~ messages:", messages)
         res.json(messages);
     } catch (err) {
         res.status(500).send(err);

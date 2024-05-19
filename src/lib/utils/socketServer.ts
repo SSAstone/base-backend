@@ -11,13 +11,20 @@ export default function initializeSocket(server: http.Server) {
             credentials: true
         }
     });
-
+    const userSocketMap = {}; // {userId->socketId}
+    
     io.on('connection', (socket) => {
-        console.log('New client connected');
+        const userId = socket.handshake.query.userId as string;
+        if (userId !== undefined) {
+            userSocketMap[userId] = socket.id;
+        }
+
+        io.emit('getOnlineUsers', Object.keys(userSocketMap));
 
         socket.on('disconnect', () => {
-            console.log('Client disconnected');
-        });
+            delete userSocketMap[userId];
+            io.emit('getOnlineUsers', Object.keys(userSocketMap));
+        })
 
         socket.on('sendMessage', async (message) => {
             console.log("🚀 ~ socket.on ~ message:", message);
@@ -34,10 +41,19 @@ export default function initializeSocket(server: http.Server) {
             console.log("🚀 ~ socket.on ~ group:", group);
             socket.join(group)
         });
-
-        // socket.on('leaveGroup', (group) => {
-        //     console.log("🚀 ~ socket.on ~ leaveGroup:", group);
-        //     socket.leave(group);
-        // });
     });
+
+    // io.on('connection', (socket) => {
+    //     const userId = socket.handshake.query.userId[0];
+    //     if (userId !== undefined) {
+    //         userSocketMap[userId] = socket.id;
+    //     }
+
+    //     io.emit('getOnlineUsers', Object.keys(userSocketMap));
+
+    //     socket.on('disconnect', () => {
+    //         delete userSocketMap[userId];
+    //         io.emit('getOnlineUsers', Object.keys(userSocketMap));
+    //     })
+    // })
 }
